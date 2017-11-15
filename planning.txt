@@ -1,0 +1,58 @@
+--------------------------------------------------------------------------------
+stages
+--------------------------------------------------------------------------------
+
+pre0 start timer
+pre1 write processing message to console
+
+0 validate input
+-bad path
+-invalid json
+-empty json
+-if bad, write to console and quit
+
+1 ingest into JsonObject -> JsonArray
+
+2 insert ListOrderId values to know order when deleting dupes from records
+
+3 sort by entryDate desc
+
+4 process dupes
+-remove dupes
+    -store current record in var
+    -foreach descending
+    -if dupe
+        -remove dupe record
+        -log changes
+
+5 write inputfile_deduplicatd.json file
+
+6 write inputfile.log file?
+
+7 stop timer
+8 write finish message to console
+9 write timer to console
+
+--------------------------------------------------------------------------------
+classes
+--------------------------------------------------------------------------------
+
+-FileValidator
+-JsonValidator
+-
+
+--------------------------------------------------------------------------------
+tests
+--------------------------------------------------------------------------------
+
+-empty file
+-bad path
+-empty json
+-one record
+-two recs, both unique
+-two recs, email dupe
+-two recs, id dupe
+-two recs, id and email dupe
+-two recs, dupe with identical entryDates (pick earliest ListOrderId)
+
+
