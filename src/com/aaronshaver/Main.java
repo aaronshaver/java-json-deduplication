@@ -1,4 +1,4 @@
-package com.company;
+package com.aaronshaver;
 
 public class Main {
 
