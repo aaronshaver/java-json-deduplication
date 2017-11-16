@@ -7,7 +7,7 @@ import java.util.Scanner;
 public class Main {
 
     private static Logging logging = new Logging();
-    private static JsonUtils json = new JsonUtils();
+    private static JsonHelpers json = new JsonHelpers();
 
     public static void main(String[] args) {
         logging.logStartedMessage();
@@ -32,8 +32,8 @@ public class Main {
     }
 
     private static void validateFilePath(String filePath) {
-        FileValidator fileValidator = new FileValidator();
-        if(!fileValidator.isValidPath(filePath)) {
+        FileHelpers fileHelpers = new FileHelpers();
+        if(!fileHelpers.isValidPath(filePath)) {
             logging.logBadFilePathMessage();
             exit();
         }

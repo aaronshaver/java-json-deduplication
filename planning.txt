@@ -5,16 +5,14 @@ stages
 DONE -- pre1 write processing message to console
 
 0 validate input
-DONE -- -bad path
--invalid json
--empty json
--if bad, write to console and quit
+DONE.............-bad path
+DONE.............-invalid json
 
 1 ingest into JsonObject -> JsonArray
 
 2 insert ListOrderId values to know order when deleting dupes from records
 
-3 sort by entryDate desc
+???? 3 sort by entryDate desc
 
 4 process dupes
 -remove dupes

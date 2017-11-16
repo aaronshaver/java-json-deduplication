@@ -1,6 +1,6 @@
 # java-json-deduplication
 
-Outputs new JSON files with dupes from original removed, as well as logging which records and fields changed
+Outputs new JSON file with dupes from original removed, as well as logging which records and fields changed
 
 To run the program, open a terminal and then:
 

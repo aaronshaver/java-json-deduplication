@@ -5,7 +5,7 @@ import com.google.gson.Gson;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class JsonUtils {
+public class JsonHelpers {
     private static final Logger logger = Logger.getLogger(Logging.class.getName());
 
     public boolean isValidJson(String json) {
