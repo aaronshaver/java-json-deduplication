@@ -2,11 +2,10 @@
 stages
 --------------------------------------------------------------------------------
 
-pre0 start timer
-pre1 write processing message to console
+DONE -- pre1 write processing message to console
 
 0 validate input
--bad path
+DONE -- -bad path
 -invalid json
 -empty json
 -if bad, write to console and quit
@@ -29,9 +28,7 @@ pre1 write processing message to console
 
 6 write inputfile.log file?
 
-7 stop timer
-8 write finish message to console
-9 write timer to console
+DONE -- 7 write finish message to console
 
 --------------------------------------------------------------------------------
 classes

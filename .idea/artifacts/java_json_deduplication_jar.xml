@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="java-json-deduplication:jar">
-    <output-path>$PROJECT_DIR$/out/artifacts/java_json_deduplication_jar</output-path>
-    <root id="archive" name="java-json-deduplication.jar">
-      <element id="module-output" name="java-json-deduplication" />
-    </root>
-  </artifact>
-</component>
