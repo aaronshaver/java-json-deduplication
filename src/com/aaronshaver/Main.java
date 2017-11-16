@@ -2,15 +2,29 @@ package com.aaronshaver;
 
 public class Main {
 
+    private static Logging logging = new Logging();
+
+    private static void exit() {
+        logging.logFinishedMessage();
+        System.exit(0);
+    }
 
     public static void main(String[] args) {
-        ConsoleOutput console = new ConsoleOutput();
+        logging.logStartedMessage();
+
         if(args.length != 1)
         {
-            console.writeBadArgumentsMessage();
-            System.exit(0);
+            logging.logBadArgumentsMessage();
+            exit();
         }
 
-        System.out.println(String.format("Input file is '%s'", args[0]));
+        String filePath = args[0];
+        FileValidator fileValidator = new FileValidator();
+        if(!fileValidator.isValidPath(filePath)) {
+            logging.logBadFilePathMessage();
+            exit();
+        }
+
+        exit();
     }
 }
