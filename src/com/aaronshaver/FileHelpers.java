@@ -10,7 +10,7 @@ public class FileHelpers {
 
     private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
-    public boolean isValidPath(String path) {
+    public static boolean isValidPath(String path) {
         File f = new File(path);
         return(f.exists() && !f.isDirectory());
     }
