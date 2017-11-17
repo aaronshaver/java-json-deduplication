@@ -4,3 +4,5 @@ cmake-build-debug/
 *.iws
 out/
 .idea_modules/
+*.log
+*.json

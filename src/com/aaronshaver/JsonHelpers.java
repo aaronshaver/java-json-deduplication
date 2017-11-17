@@ -6,14 +6,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class JsonHelpers {
-    private static final Logger logger = Logger.getLogger(Logging.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
     public boolean isValidJson(String json) {
         Gson gson = new Gson();
         try {
             Object o = gson.fromJson(json, Object.class);
         } catch (Exception e) {
-            logger.log(Level.WARNING, "Sorry, your file does not contain valid JSON");
+            LOGGER.log(Level.WARNING, LogMessages.Messages.BAD_JSON.toString());
             return false;
         }
         return true;
