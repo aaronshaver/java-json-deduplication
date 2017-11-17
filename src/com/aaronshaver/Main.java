@@ -37,6 +37,8 @@ public class Main {
             exit();
         }
 
+
+
         JsonObject json = JsonHelpers.getJsonFromString(data);
         FileHelpers.WriteFileFromJson(json);
 
@@ -51,7 +53,7 @@ public class Main {
 
         FileHandler fileHandler;
         try {
-            fileHandler = new FileHandler( "deduplication_log_" + nowAsISO + ".log");
+            fileHandler = new FileHandler( "deduplicated_log_" + nowAsISO + ".log");
             LOGGER.addHandler(fileHandler);
             SimpleFormatter formatter = new SimpleFormatter();
             fileHandler.setFormatter(formatter);

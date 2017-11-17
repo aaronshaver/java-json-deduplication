@@ -21,4 +21,8 @@ public class JsonHelpers {
     public static String getStringFromJson(JsonObject json) {
         return json.toString();
     }
+
+    public static boolean hasDupes(JsonObject json) {
+        return false;
+    }
 }
