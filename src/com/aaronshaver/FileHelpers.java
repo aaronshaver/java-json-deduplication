@@ -1,7 +1,10 @@
 package com.aaronshaver;
 
+import com.google.gson.JsonObject;
+
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,5 +27,15 @@ public class FileHelpers {
             LOGGER.log(Level.WARNING, LogMessages.Messages.BAD_FILE_PATH.toString());
         }
         return data;
+    }
+
+    public static void WriteFileFromJson(JsonObject json) {
+        String text = JsonHelpers.getStringFromJson(json);
+        try (PrintWriter out = new PrintWriter("deduplicated.json")) {
+            out.println(text);
+        }
+        catch (FileNotFoundException e) {
+            LOGGER.log(Level.SEVERE, LogMessages.Messages.BAD_FILE_PATH.toString());
+        }
     }
 }

@@ -18,6 +18,7 @@ public class Main {
 
     public static void main(String[] args) {
         addFileHandlerToLogger();
+
         LOGGER.log(Level.INFO, LogMessages.Messages.STARTED.toString());
 
         if (!isRequiredNumArguments(args)) {
@@ -37,6 +38,7 @@ public class Main {
         }
 
         JsonObject json = JsonHelpers.getJsonFromString(data);
+        FileHelpers.WriteFileFromJson(json);
 
         exit();
     }

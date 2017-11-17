@@ -17,4 +17,8 @@ public class JsonHelpers {
     public static JsonObject getJsonFromString(String string) {
         return new Gson().fromJson(string, JsonObject.class);
     }
+
+    public static String getStringFromJson(JsonObject json) {
+        return json.toString();
+    }
 }
