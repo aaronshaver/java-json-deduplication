@@ -37,10 +37,18 @@ public class Main {
             exit();
         }
 
-
-
         JsonObject json = JsonHelpers.getJsonFromString(data);
-        FileHelpers.WriteFileFromJson(json);
+
+        JsonObject deduplicated_json;
+        if (!JsonHelpers.hasDupes(json)) {
+            LOGGER.log(Level.INFO, LogMessages.Messages.NO_DUPES.toString());
+            deduplicated_json = json;
+        }
+        else {
+            deduplicated_json = json;
+        }
+
+        FileHelpers.WriteFileFromJson(deduplicated_json);
 
         exit();
     }

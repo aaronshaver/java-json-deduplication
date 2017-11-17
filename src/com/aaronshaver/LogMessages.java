@@ -7,7 +7,8 @@ public class LogMessages {
         STARTED("Started. Please see deduplicated.json and deduplication_log_<datetime>.log file upon completion."),
         ARGUMENT_NUMBER("Please use 1 argument after the .jar file and a space pointing to .JSON"),
         BAD_JSON("Sorry, your file does not contain valid JSON"),
-        FINISHED("Finished.");
+        FINISHED("Finished."),
+        NO_DUPES("Your input file did not have any duplicate entries.");
 
         private final String message;
 

@@ -40,8 +40,16 @@ public class JsonTests {
     }
 
     @Test
-    public void testHasDupesTrueForCodeChallengeJson() {
-        JsonObject json = JsonHelpers.getJsonFromString(jsonCodeChallenge);
+    public void testHasDupesForIdDupes() {
+        String data = "{\"leads\":[{\"_id\":\"jkj238238jdsnfsj23\",\"email\":\"aaa@bar.com\",\"firstName\":\"John\",\"lastName\":\"Smith\",\"address\":\"123 Street St\",\"entryDate\":\"2014-05-07T17:30:20+00:00\"},{\"_id\":\"jkj238238jdsnfsj23\",\"email\":\"zzz@bar.com\",\"firstName\":\"Ted\",\"lastName\":\"Masters\",\"address\":\"44 North Hampton St\",\"entryDate\":\"2014-05-07T17:31:20+00:00\"}]}\n";
+        JsonObject json = JsonHelpers.getJsonFromString(data);
+        Assert.assertEquals(true, JsonHelpers.hasDupes(json));
+    }
+
+    @Test
+    public void testHasDupesForEmailDupes() {
+        String data = "{\"leads\":[{\"_id\":\"yh8fe8ywe7t345\",\"email\":\"aaa@bar.com\",\"firstName\":\"John\",\"lastName\":\"Smith\",\"address\":\"123 Street St\",\"entryDate\":\"2014-05-07T17:30:20+00:00\"},{\"_id\":\"e54te0987tje4t834\",\"email\":\"aaa@bar.com\",\"firstName\":\"Ted\",\"lastName\":\"Masters\",\"address\":\"44 North Hampton St\",\"entryDate\":\"2014-05-07T17:31:20+00:00\"}]}";
+        JsonObject json = JsonHelpers.getJsonFromString(data);
         Assert.assertEquals(true, JsonHelpers.hasDupes(json));
     }
 }

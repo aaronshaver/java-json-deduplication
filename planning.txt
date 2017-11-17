@@ -1,3 +1,10 @@
+Note: this was just a scratchpad / transfer from a whiteboard to get me started.
+
+I mostly did a mix of TDD automated tests and experiment with code-manual test-back to code cycles for the actual
+development and diverged from this document at some point.
+
+In summary: light whiteboarding/planning, then dived into code once I had a skeleton and some key ideas written down.
+
 --------------------------------------------------------------------------------
 stages
 --------------------------------------------------------------------------------
