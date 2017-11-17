@@ -39,7 +39,7 @@ public class DeduplicatorTests {
 
     @Test
     public void testGetJsonFromString() {
-        String data = "{}";
+        String data = "{\"thing\":[{\"a\":\"first letter\"},{\"b\":\"second letter\"}]}";
         Assert.assertThat(JsonHelpers.getJsonFromString(data), instanceOf(JsonObject.class));
     }
 

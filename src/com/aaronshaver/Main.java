@@ -1,6 +1,5 @@
 package com.aaronshaver;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import java.io.IOException;
@@ -50,7 +49,7 @@ public class Main {
 
         FileHandler fileHandler;
         try {
-            fileHandler = new FileHandler( "dedupe_" + nowAsISO + ".log");
+            fileHandler = new FileHandler( "deduplication_log_" + nowAsISO + ".log");
             LOGGER.addHandler(fileHandler);
             SimpleFormatter formatter = new SimpleFormatter();
             fileHandler.setFormatter(formatter);
