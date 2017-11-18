@@ -37,7 +37,7 @@ public class Main {
             exit();
         }
 
-        JsonObject json = JsonHelpers.getJsonFromString(data);
+        JsonObject json = JsonHelpers.getJsonObjectFromString(data);
 
         JsonObject deduplicated_json;
         if (!JsonHelpers.hasDupes(json)) {
