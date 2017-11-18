@@ -79,6 +79,7 @@ public class JsonHelpers {
         ArrayList<Leads> listCopy = new ArrayList<>(leads);
 
         for (int i = 0; i < leads.size(); i++) {
+            // create a subset of the entries to compare value-under-test against
             ArrayList<Leads> sublist = new ArrayList<>(leads.subList(i + 1, leads.size()));
             boolean dupeFlag = false;
             String outerEmail = leads.get(i).getEmail();
@@ -88,6 +89,7 @@ public class JsonHelpers {
                 String innerId = sublist.get(j).get_id();
 
                 if (outerEmail.equals(innerEmail) || outerId.equals(innerId)) {
+                    // sublist is offset by one, because it excludes value-under-test
                     int index = i + j + 1;
                     LOGGER.log(Level.INFO, "Found a dupe at index " + index);
                     dupeFlag = true;
@@ -107,6 +109,7 @@ public class JsonHelpers {
         for (Map.Entry<String, JsonElement> entry : json.entrySet()) {
             array = entry.getValue().getAsJsonArray();
         }
+        // convert to an array of instances of our custom POJO class so we don't have to parse JSON directly
         Leads[] leadsArray = new Gson().fromJson(array, Leads[].class);
         ArrayList<Leads> leads = new ArrayList<>(Arrays.asList(leadsArray));
 
