@@ -102,4 +102,14 @@ public class JsonTests {
         Assert.assertEquals(2, JsonHelpers.getEntitiesCount(deduped_json));
         Assert.assertEquals(false, JsonHelpers.hasDupes(deduped_json));
     }
+
+    @Test
+    public void testRemove2Dupes1IdDupe1EmailDupeFrom7Entries() {
+        String twoDupeTypes7Entries = "{\"leads\":[{\"_id\":\"unique-mjcg5ju94mnju954g\",\"email\":\"unique-yyy@yyy.com\",\"firstName\":\"John\",\"lastName\":\"Smith\",\"address\":\"123 Street St\",\"entryDate\":\"2014-05-07T17:30:20+00:00\"},{\"_id\":\"unique-hn83q4htq34t\",\"email\":\"dupe-aaa@aaa.com\",\"firstName\":\"John\",\"lastName\":\"Smith\",\"address\":\"123 Street St\",\"entryDate\":\"2014-05-07T17:30:20+00:00\"},{\"_id\":\"dupe-qxgemh9uqegerghu\",\"email\":\"unique-zzz@zzz.com\",\"firstName\":\"Ted\",\"lastName\":\"Masters\",\"address\":\"44 North Hampton St\",\"entryDate\":\"2014-05-07T17:31:20+00:00\"},{\"_id\":\"unique-4jm59ujmn45t9un\",\"email\":\"unique-www@wwww.com\",\"firstName\":\"Aaron\",\"lastName\":\"Shaver\",\"address\":\"456 Street St\",\"entryDate\":\"2014-05-07T17:30:20+00:00\"},{\"_id\":\"dupe-qxgemh9uqegerghu\",\"email\":\"unique-eee@eee.com\",\"firstName\":\"Joe\",\"lastName\":\"Schmoe\",\"address\":\"55 South Hampton St\",\"entryDate\":\"2014-05-07T17:32:20+00:00\"},{\"_id\":\"unique-hgreunh84u3u8h43\",\"email\":\"dupe-aaa@aaa.com\",\"firstName\":\"John\",\"lastName\":\"Smith\",\"address\":\"123 Street St\",\"entryDate\":\"2014-05-07T17:30:20+00:00\"},{\"_id\":\"unique-dfjkh2384h72345h\",\"email\":\"unique-hhh@hhh.com\",\"firstName\":\"John\",\"lastName\":\"Smith\",\"address\":\"123 Street St\",\"entryDate\":\"2014-05-07T17:30:20+00:00\"}]}";
+        JsonObject json = JsonHelpers.getJsonObjectFromString(twoDupeTypes7Entries);
+        Assert.assertEquals(7, JsonHelpers.getEntitiesCount(json));
+        JsonObject deduped_json = JsonHelpers.dedupe(json);
+        Assert.assertEquals(5, JsonHelpers.getEntitiesCount(deduped_json));
+        Assert.assertEquals(false, JsonHelpers.hasDupes(deduped_json));
+    }
 }

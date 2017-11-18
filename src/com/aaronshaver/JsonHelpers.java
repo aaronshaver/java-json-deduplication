@@ -75,6 +75,33 @@ public class JsonHelpers {
         }
     }
 
+    private static ArrayList<Leads> processDupes(ArrayList<Leads> leads) {
+        ArrayList<Leads> listCopy = new ArrayList<>(leads);
+
+        for (int i = 0; i < leads.size(); i++) {
+            ArrayList<Leads> sublist = new ArrayList<>(leads.subList(i + 1, leads.size()));
+            boolean dupeFlag = false;
+            String outerEmail = leads.get(i).getEmail();
+            String outerId = leads.get(i).get_id();
+            for (int j = 0; j < sublist.size(); j++) {
+                String innerEmail = sublist.get(j).getEmail();
+                String innerId = sublist.get(j).get_id();
+
+                if (outerEmail.equals(innerEmail) || outerId.equals(innerId)) {
+                    int index = i + j + 1;
+                    LOGGER.log(Level.INFO, "Found a dupe at index " + index);
+                    dupeFlag = true;
+                    listCopy.remove(index);
+                    break;
+                }
+            }
+            if (dupeFlag) {
+                break;
+            }
+        }
+        return listCopy;
+    }
+
     public static JsonObject dedupe(JsonObject json) {
         JsonArray array = null;
         for (Map.Entry<String, JsonElement> entry : json.entrySet()) {
@@ -83,17 +110,14 @@ public class JsonHelpers {
         Leads[] leadsArray = new Gson().fromJson(array, Leads[].class);
         ArrayList<Leads> leads = new ArrayList<>(Arrays.asList(leadsArray));
 
-        for (int i = 0; i < leads.size(); i++) {
-            ArrayList<Leads> sublist = new ArrayList<>(leads.subList(i + 1, leads.size()));
-            for (int j = 0; j < sublist.size(); j++) {
-                if (leads.get(i).getEmail().equals(sublist.get(j).getEmail()) ||
-                        leads.get(i).get_id().equals(sublist.get(j).get_id())) {
-                    LOGGER.log(Level.INFO, "Found a dupe at index " + j);
-                    leads.remove(j);
-                }
-            }
+        while (hasDupes(convertLeadsArrayListToJsonObject(leads))) {
+            leads = processDupes(leads);
         }
 
+        return convertLeadsArrayListToJsonObject(leads);
+    }
+
+    private static JsonObject convertLeadsArrayListToJsonObject(ArrayList<Leads> leads) {
         Leads[] leadsDeduped = new Leads[leads.size()];
         leadsDeduped = leads.toArray(leadsDeduped);
 
