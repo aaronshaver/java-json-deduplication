@@ -10,6 +10,12 @@ To run the program, open a terminal and then:
 
 Then find the deduplicated.json and deduplication_log_<datetime>.log file upon completion
 
+## Implementation note
+
+The requirements didn't state what should happen under circumstances like the duplicate having a value and the preferred
+record not having a value. Should the non-empty value be preserved or discarded? I chose to remove the duplicate
+wholesale. If this were a real work assignment, I'd ask the PM/product owner/etc. what the client would prefer.
+
 ## Requirements
 
 1. Data from newest-date entry preferred

@@ -50,22 +50,25 @@ public class Deduplication {
                     Date outerDate = DateHelpers.getDateFromUTCString(leads.get(i).getEntryDate());
                     Date innerDate = DateHelpers.getDateFromUTCString(sublist.get(j).getEntryDate());
 
-                    int index;
+                    int keepIndex;
+                    int removeIndex;
                     if(outerDate.after(innerDate)) {
                         // value-under-test (VUT) is newer date, therefore remove "inner", older value
                         // also: sublist is offset by one, because it excludes the value-under-test
-                        index = i + j + 1;
+                        keepIndex = i;
+                        removeIndex = i + j + 1;
                     }
                     else {
                         // Otherwise, either: value-under-test (VUT) is older and should be removed
                         // Or: value-under-test (VUT) and our inner/comparison value have the same datetime
                         // If they have the same datetime: remove "outer"/VUT entry: it's earlier in the list of entries
-                        index = i;
+                        keepIndex = i + j + 1;
+                        removeIndex = i;
                     }
 
-                    LOGGER.log(Level.INFO, "Found a dupe at index " + index); // TODO: output full fields text
+                    writeDupeDifferencesToLog(listCopy, keepIndex, removeIndex);
+                    listCopy.remove(removeIndex);
                     dupeFlag = true;
-                    listCopy.remove(index);
                     break;
                 }
             }
@@ -74,6 +77,23 @@ public class Deduplication {
             }
         }
         return listCopy;
+    }
+
+    private static void writeDupeDifferencesToLog(ArrayList<Leads> leads, int keepIndex, int removeIndex) {
+        LOGGER.log(Level.INFO, "[Deduplication] START duplicate logging ");
+        Leads keep = leads.get(keepIndex);
+        Leads remove = leads.get(removeIndex);
+        LOGGER.log(Level.INFO, "[Deduplication] Keeping preferred record: " + keep.toString());
+        LOGGER.log(Level.INFO, "[Deduplication] Removing duplicate record: " + remove.toString());
+
+        String fieldMsg = "[Deduplication][Field] 'Field name': 'Remove val' -> 'Keep val' | ";
+        LOGGER.log(Level.INFO, fieldMsg + "'_id': '" + remove.get_id() + "' -> '" + keep.get_id() + "'");
+        LOGGER.log(Level.INFO, fieldMsg + "'email': '" + remove.getEmail() + "' -> '" + keep.getEmail() + "'");
+        LOGGER.log(Level.INFO, fieldMsg + "'firstName': '" + remove.getFirstName() + "' -> '" + keep.getFirstName() + "'");
+        LOGGER.log(Level.INFO, fieldMsg + "'lastName': '" + remove.getLastName() + "' -> '" + keep.getLastName() + "'");
+        LOGGER.log(Level.INFO, fieldMsg + "'address': '" + remove.getAddress() + "' -> '" + keep.getAddress() + "'");
+        LOGGER.log(Level.INFO, fieldMsg + "'entryDate': '" + remove.getEntryDate() + "' -> '" + keep.getEntryDate() + "'");
+        LOGGER.log(Level.INFO, "[Deduplication] END duplicate logging ");
     }
 
     public static JsonObject dedupe(JsonObject json) {
