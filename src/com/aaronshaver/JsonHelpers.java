@@ -2,6 +2,9 @@ package com.aaronshaver;
 
 import com.google.gson.*;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -75,6 +78,18 @@ public class JsonHelpers {
         }
     }
 
+    private static Date getDate(String date) {
+        // see https://docs.oracle.com/javase/7/docs/api/java/text/SimpleDateFormat.html
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssX", Locale.ENGLISH);
+        Date out = null;
+        try {
+            out = format.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return out;
+    }
+
     private static ArrayList<Leads> processDupes(ArrayList<Leads> leads) {
         ArrayList<Leads> listCopy = new ArrayList<>(leads);
 
@@ -89,9 +104,20 @@ public class JsonHelpers {
                 String innerId = sublist.get(j).get_id();
 
                 if (outerEmail.equals(innerEmail) || outerId.equals(innerId)) {
-                    // sublist is offset by one, because it excludes value-under-test
-                    int index = i + j + 1;
-                    LOGGER.log(Level.INFO, "Found a dupe at index " + index);
+                    Date outerDate = getDate(leads.get(i).getEntryDate());
+                    Date innerDate = getDate(sublist.get(j).getEntryDate());
+                    int index;
+                    if(outerDate.after(innerDate)) {
+                        index = i + j + 1; // value-under-test (VUT) is later, therefore preferred
+                    }
+                    else if (innerDate.after(outerDate)) {
+                        index = i; // value we're comparing VUT against is later, therefore preferred
+                    }
+                    else {
+                        index = i; // remove "outer"/VUT entry; since we're doing for loop in order, it's earlier
+                    }
+                    // sublist is offset by one, because it excludes the value-under-test
+                    LOGGER.log(Level.INFO, "Found a dupe at index " + index); // TODO: output full fields text
                     dupeFlag = true;
                     listCopy.remove(index);
                     break;
