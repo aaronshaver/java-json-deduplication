@@ -40,12 +40,12 @@ public class Main {
         JsonObject json = JsonHelpers.getJsonObjectFromString(data);
 
         JsonObject deduplicated_json;
-        if (!JsonHelpers.hasDupes(json)) {
+        if (!Deduplication.hasDupes(json)) {
             LOGGER.log(Level.INFO, LogMessages.Messages.NO_DUPES.toString());
             deduplicated_json = json;
         }
         else {
-            deduplicated_json = JsonHelpers.dedupe(json);
+            deduplicated_json = Deduplication.dedupe(json);
         }
 
         FileHelpers.WriteFileFromJson(deduplicated_json);

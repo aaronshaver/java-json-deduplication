@@ -1,3 +1,4 @@
+import com.aaronshaver.Deduplication;
 import com.aaronshaver.JsonHelpers;
 import com.google.gson.JsonObject;
 import org.junit.Assert;
@@ -36,20 +37,20 @@ public class JsonTests {
     public void testHasDupesFalseForEmptyJson() {
         String data = "{}";
         JsonObject json = JsonHelpers.getJsonObjectFromString(data);
-        Assert.assertEquals(false, JsonHelpers.hasDupes(json));
+        Assert.assertEquals(false, Deduplication.hasDupes(json));
     }
 
     @Test
     public void testHasDupesForIdDupes() {
         String data = "{\"leads\":[{\"_id\":\"jkj238238jdsnfsj23\",\"email\":\"aaa@bar.com\",\"firstName\":\"John\",\"lastName\":\"Smith\",\"address\":\"123 Street St\",\"entryDate\":\"2014-05-07T17:30:20+00:00\"},{\"_id\":\"jkj238238jdsnfsj23\",\"email\":\"zzz@bar.com\",\"firstName\":\"Ted\",\"lastName\":\"Masters\",\"address\":\"44 North Hampton St\",\"entryDate\":\"2014-05-07T17:31:20+00:00\"}]}\n";
         JsonObject json = JsonHelpers.getJsonObjectFromString(data);
-        Assert.assertEquals(true, JsonHelpers.hasDupes(json));
+        Assert.assertEquals(true, Deduplication.hasDupes(json));
     }
 
     @Test
     public void testHasDupesForEmailDupes() {
         JsonObject json = JsonHelpers.getJsonObjectFromString(oneEmailDupe);
-        Assert.assertEquals(true, JsonHelpers.hasDupes(json));
+        Assert.assertEquals(true, Deduplication.hasDupes(json));
     }
 
     @Test
@@ -68,9 +69,9 @@ public class JsonTests {
     public void testRemove1EmailDupeFrom2Entries() {
         JsonObject json = JsonHelpers.getJsonObjectFromString(oneEmailDupe);
         Assert.assertEquals(2, JsonHelpers.getEntitiesCount(json));
-        JsonObject deduped_json = JsonHelpers.dedupe(json);
+        JsonObject deduped_json = Deduplication.dedupe(json);
         Assert.assertEquals(1, JsonHelpers.getEntitiesCount(deduped_json));
-        Assert.assertEquals(false, JsonHelpers.hasDupes(deduped_json));
+        Assert.assertEquals(false, Deduplication.hasDupes(deduped_json));
     }
 
     @Test
@@ -78,9 +79,9 @@ public class JsonTests {
         String oneIdDupe = "{\"leads\":[{\"_id\":\"e54te0987tje4t834\",\"email\":\"aaa@aaa.com\",\"firstName\":\"John\",\"lastName\":\"Smith\",\"address\":\"123 Street St\",\"entryDate\":\"2014-05-07T17:30:20+00:00\"},{\"_id\":\"e54te0987tje4t834\",\"email\":\"zzz@zzz.com\",\"firstName\":\"Ted\",\"lastName\":\"Masters\",\"address\":\"44 North Hampton St\",\"entryDate\":\"2014-05-07T17:31:20+00:00\"}]}";
         JsonObject json = JsonHelpers.getJsonObjectFromString(oneIdDupe);
         Assert.assertEquals(2, JsonHelpers.getEntitiesCount(json));
-        JsonObject deduped_json = JsonHelpers.dedupe(json);
+        JsonObject deduped_json = Deduplication.dedupe(json);
         Assert.assertEquals(1, JsonHelpers.getEntitiesCount(deduped_json));
-        Assert.assertEquals(false, JsonHelpers.hasDupes(deduped_json));
+        Assert.assertEquals(false, Deduplication.hasDupes(deduped_json));
     }
 
     @Test
@@ -88,9 +89,9 @@ public class JsonTests {
         String twoUniques = "{\"leads\":[{\"_id\":\"hn83q4htq34t\",\"email\":\"aaa@aaa.com\",\"firstName\":\"John\",\"lastName\":\"Smith\",\"address\":\"123 Street St\",\"entryDate\":\"2014-05-07T17:30:20+00:00\"},{\"_id\":\"qxgemh9uqegerghu\",\"email\":\"zzz@zzz.com\",\"firstName\":\"Ted\",\"lastName\":\"Masters\",\"address\":\"44 North Hampton St\",\"entryDate\":\"2014-05-07T17:31:20+00:00\"}]}";
         JsonObject json = JsonHelpers.getJsonObjectFromString(twoUniques);
         Assert.assertEquals(2, JsonHelpers.getEntitiesCount(json));
-        JsonObject deduped_json = JsonHelpers.dedupe(json);
+        JsonObject deduped_json = Deduplication.dedupe(json);
         Assert.assertEquals(2, JsonHelpers.getEntitiesCount(deduped_json));
-        Assert.assertEquals(false, JsonHelpers.hasDupes(deduped_json));
+        Assert.assertEquals(false, Deduplication.hasDupes(deduped_json));
     }
 
     @Test
@@ -98,9 +99,9 @@ public class JsonTests {
         String oneIdDupeThreeEntries = "{\"leads\":[{\"_id\":\"hn83q4htq34t\",\"email\":\"aaa@aaa.com\",\"firstName\":\"John\",\"lastName\":\"Smith\",\"address\":\"123 Street St\",\"entryDate\":\"2014-05-07T17:30:20+00:00\"},{\"_id\":\"qxgemh9uqegerghu\",\"email\":\"zzz@zzz.com\",\"firstName\":\"Ted\",\"lastName\":\"Masters\",\"address\":\"44 North Hampton St\",\"entryDate\":\"2014-05-07T17:31:20+00:00\"},{\"_id\":\"qxgemh9uqegerghu\",\"email\":\"eee@eee.com\",\"firstName\":\"Joe\",\"lastName\":\"Schmoe\",\"address\":\"55 South Hampton St\",\"entryDate\":\"2014-05-07T17:32:20+00:00\"}]}";
         JsonObject json = JsonHelpers.getJsonObjectFromString(oneIdDupeThreeEntries);
         Assert.assertEquals(3, JsonHelpers.getEntitiesCount(json));
-        JsonObject deduped_json = JsonHelpers.dedupe(json);
+        JsonObject deduped_json = Deduplication.dedupe(json);
         Assert.assertEquals(2, JsonHelpers.getEntitiesCount(deduped_json));
-        Assert.assertEquals(false, JsonHelpers.hasDupes(deduped_json));
+        Assert.assertEquals(false, Deduplication.hasDupes(deduped_json));
     }
 
     @Test
@@ -108,17 +109,17 @@ public class JsonTests {
         String twoDupeTypes7Entries = "{\"leads\":[{\"_id\":\"unique-mjcg5ju94mnju954g\",\"email\":\"unique-yyy@yyy.com\",\"firstName\":\"John\",\"lastName\":\"Smith\",\"address\":\"123 Street St\",\"entryDate\":\"2014-05-07T17:30:20+00:00\"},{\"_id\":\"unique-hn83q4htq34t\",\"email\":\"dupe-aaa@aaa.com\",\"firstName\":\"John\",\"lastName\":\"Smith\",\"address\":\"123 Street St\",\"entryDate\":\"2014-05-07T17:30:20+00:00\"},{\"_id\":\"dupe-qxgemh9uqegerghu\",\"email\":\"unique-zzz@zzz.com\",\"firstName\":\"Ted\",\"lastName\":\"Masters\",\"address\":\"44 North Hampton St\",\"entryDate\":\"2014-05-07T17:31:20+00:00\"},{\"_id\":\"unique-4jm59ujmn45t9un\",\"email\":\"unique-www@wwww.com\",\"firstName\":\"Aaron\",\"lastName\":\"Shaver\",\"address\":\"456 Street St\",\"entryDate\":\"2014-05-07T17:30:20+00:00\"},{\"_id\":\"dupe-qxgemh9uqegerghu\",\"email\":\"unique-eee@eee.com\",\"firstName\":\"Joe\",\"lastName\":\"Schmoe\",\"address\":\"55 South Hampton St\",\"entryDate\":\"2014-05-07T17:32:20+00:00\"},{\"_id\":\"unique-hgreunh84u3u8h43\",\"email\":\"dupe-aaa@aaa.com\",\"firstName\":\"John\",\"lastName\":\"Smith\",\"address\":\"123 Street St\",\"entryDate\":\"2014-05-07T17:30:20+00:00\"},{\"_id\":\"unique-dfjkh2384h72345h\",\"email\":\"unique-hhh@hhh.com\",\"firstName\":\"John\",\"lastName\":\"Smith\",\"address\":\"123 Street St\",\"entryDate\":\"2014-05-07T17:30:20+00:00\"}]}";
         JsonObject json = JsonHelpers.getJsonObjectFromString(twoDupeTypes7Entries);
         Assert.assertEquals(7, JsonHelpers.getEntitiesCount(json));
-        JsonObject deduped_json = JsonHelpers.dedupe(json);
+        JsonObject deduped_json = Deduplication.dedupe(json);
         Assert.assertEquals(5, JsonHelpers.getEntitiesCount(deduped_json));
-        Assert.assertEquals(false, JsonHelpers.hasDupes(deduped_json));
+        Assert.assertEquals(false, Deduplication.hasDupes(deduped_json));
     }
 
     @Test
     public void testRemoveFirstOlder() {
         String dupeFirstAndOlder = "{\"leads\":[{\"_id\":\"dupe-hn83q4htq34t\",\"email\":\"aaa@aaa.com\",\"firstName\":\"John\",\"lastName\":\"Smith\",\"address\":\"123 Street St\",\"entryDate\":\"2016-01-01T17:30:20+00:00\"},{\"_id\":\"dupe-hn83q4htq34t\",\"email\":\"zzz@zzz.com\",\"firstName\":\"Ted\",\"lastName\":\"Masters\",\"address\":\"44 North Hampton St\",\"entryDate\":\"2017-07-07T17:31:20+00:00\"}]}";
         JsonObject json = JsonHelpers.getJsonObjectFromString(dupeFirstAndOlder);
-        JsonObject deduped_json = JsonHelpers.dedupe(json);
-        Assert.assertEquals(false, JsonHelpers.hasDupes(deduped_json));
+        JsonObject deduped_json = Deduplication.dedupe(json);
+        Assert.assertEquals(false, Deduplication.hasDupes(deduped_json));
         String jsonString = JsonHelpers.getStringFromJson(deduped_json);
         Assert.assertTrue(jsonString.contains("zzz@zzz.com"));
         Assert.assertFalse(jsonString.contains("aaa@aaa.com"));
@@ -128,8 +129,8 @@ public class JsonTests {
     public void testRemoveSecondOlder() {
         String dupeSecondOlder = "{\"leads\":[{\"_id\":\"dupe-hn83q4htq34t\",\"email\":\"aaa@aaa.com\",\"firstName\":\"John\",\"lastName\":\"Smith\",\"address\":\"123 Street St\",\"entryDate\":\"2017-01-01T17:30:20+00:00\"},{\"_id\":\"dupe-hn83q4htq34t\",\"email\":\"zzz@zzz.com\",\"firstName\":\"Ted\",\"lastName\":\"Masters\",\"address\":\"44 North Hampton St\",\"entryDate\":\"2012-07-07T17:31:20+00:00\"}]}";
         JsonObject json = JsonHelpers.getJsonObjectFromString(dupeSecondOlder);
-        JsonObject deduped_json = JsonHelpers.dedupe(json);
-        Assert.assertEquals(false, JsonHelpers.hasDupes(deduped_json));
+        JsonObject deduped_json = Deduplication.dedupe(json);
+        Assert.assertEquals(false, Deduplication.hasDupes(deduped_json));
         String jsonString = JsonHelpers.getStringFromJson(deduped_json);
         Assert.assertTrue(jsonString.contains("aaa@aaa.com"));
         Assert.assertFalse(jsonString.contains("zzz@zzz.com"));
@@ -139,8 +140,8 @@ public class JsonTests {
     public void testRemoveEarlierEntryWhenDatesAreEqual() {
         String dupeDatesEqual = "{\"leads\":[{\"_id\":\"dupe-hn83q4htq34t\",\"email\":\"aaa@aaa.com\",\"firstName\":\"John\",\"lastName\":\"Smith\",\"address\":\"123 Street St\",\"entryDate\":\"2017-01-01T17:30:20+00:00\"},{\"_id\":\"dupe-hn83q4htq34t\",\"email\":\"zzz@zzz.com\",\"firstName\":\"Ted\",\"lastName\":\"Masters\",\"address\":\"44 North Hampton St\",\"entryDate\":\"2017-01-01T17:30:20+00:00\"}]}";
         JsonObject json = JsonHelpers.getJsonObjectFromString(dupeDatesEqual);
-        JsonObject deduped_json = JsonHelpers.dedupe(json);
-        Assert.assertEquals(false, JsonHelpers.hasDupes(deduped_json));
+        JsonObject deduped_json = Deduplication.dedupe(json);
+        Assert.assertEquals(false, Deduplication.hasDupes(deduped_json));
         String jsonString = JsonHelpers.getStringFromJson(deduped_json);
         Assert.assertTrue(jsonString.contains("zzz@zzz.com"));
         Assert.assertFalse(jsonString.contains("aaa@aaa.com"));
