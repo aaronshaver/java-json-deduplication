@@ -70,5 +70,36 @@ public class JsonTests {
         Assert.assertEquals(2, JsonHelpers.getEntitiesCount(json));
         JsonObject deduped_json = JsonHelpers.dedupe(json);
         Assert.assertEquals(1, JsonHelpers.getEntitiesCount(deduped_json));
+        Assert.assertEquals(false, JsonHelpers.hasDupes(deduped_json));
+    }
+
+    @Test
+    public void testRemove1IdDupeFrom2Entries() {
+        String oneIdDupe = "{\"leads\":[{\"_id\":\"e54te0987tje4t834\",\"email\":\"aaa@aaa.com\",\"firstName\":\"John\",\"lastName\":\"Smith\",\"address\":\"123 Street St\",\"entryDate\":\"2014-05-07T17:30:20+00:00\"},{\"_id\":\"e54te0987tje4t834\",\"email\":\"zzz@zzz.com\",\"firstName\":\"Ted\",\"lastName\":\"Masters\",\"address\":\"44 North Hampton St\",\"entryDate\":\"2014-05-07T17:31:20+00:00\"}]}";
+        JsonObject json = JsonHelpers.getJsonObjectFromString(oneIdDupe);
+        Assert.assertEquals(2, JsonHelpers.getEntitiesCount(json));
+        JsonObject deduped_json = JsonHelpers.dedupe(json);
+        Assert.assertEquals(1, JsonHelpers.getEntitiesCount(deduped_json));
+        Assert.assertEquals(false, JsonHelpers.hasDupes(deduped_json));
+    }
+
+    @Test
+    public void testRemove0DupesFrom2UniqueEntries() {
+        String twoUniques = "{\"leads\":[{\"_id\":\"hn83q4htq34t\",\"email\":\"aaa@aaa.com\",\"firstName\":\"John\",\"lastName\":\"Smith\",\"address\":\"123 Street St\",\"entryDate\":\"2014-05-07T17:30:20+00:00\"},{\"_id\":\"qxgemh9uqegerghu\",\"email\":\"zzz@zzz.com\",\"firstName\":\"Ted\",\"lastName\":\"Masters\",\"address\":\"44 North Hampton St\",\"entryDate\":\"2014-05-07T17:31:20+00:00\"}]}";
+        JsonObject json = JsonHelpers.getJsonObjectFromString(twoUniques);
+        Assert.assertEquals(2, JsonHelpers.getEntitiesCount(json));
+        JsonObject deduped_json = JsonHelpers.dedupe(json);
+        Assert.assertEquals(2, JsonHelpers.getEntitiesCount(deduped_json));
+        Assert.assertEquals(false, JsonHelpers.hasDupes(deduped_json));
+    }
+
+    @Test
+    public void testRemove1IdDupeFrom3Entries() {
+        String oneIdDupeThreeEntries = "{\"leads\":[{\"_id\":\"hn83q4htq34t\",\"email\":\"aaa@aaa.com\",\"firstName\":\"John\",\"lastName\":\"Smith\",\"address\":\"123 Street St\",\"entryDate\":\"2014-05-07T17:30:20+00:00\"},{\"_id\":\"qxgemh9uqegerghu\",\"email\":\"zzz@zzz.com\",\"firstName\":\"Ted\",\"lastName\":\"Masters\",\"address\":\"44 North Hampton St\",\"entryDate\":\"2014-05-07T17:31:20+00:00\"},{\"_id\":\"qxgemh9uqegerghu\",\"email\":\"eee@eee.com\",\"firstName\":\"Joe\",\"lastName\":\"Schmoe\",\"address\":\"55 South Hampton St\",\"entryDate\":\"2014-05-07T17:32:20+00:00\"}]}";
+        JsonObject json = JsonHelpers.getJsonObjectFromString(oneIdDupeThreeEntries);
+        Assert.assertEquals(3, JsonHelpers.getEntitiesCount(json));
+        JsonObject deduped_json = JsonHelpers.dedupe(json);
+        Assert.assertEquals(2, JsonHelpers.getEntitiesCount(deduped_json));
+        Assert.assertEquals(false, JsonHelpers.hasDupes(deduped_json));
     }
 }

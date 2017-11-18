@@ -45,7 +45,7 @@ public class Main {
             deduplicated_json = json;
         }
         else {
-            deduplicated_json = json;
+            deduplicated_json = JsonHelpers.dedupe(json);
         }
 
         FileHelpers.WriteFileFromJson(deduplicated_json);

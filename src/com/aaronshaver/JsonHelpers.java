@@ -3,8 +3,13 @@ package com.aaronshaver;
 import com.google.gson.*;
 
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class JsonHelpers {
+
+    private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+
     public static boolean isValidJson(String json) {
         Gson gson = new Gson();
         try {
@@ -78,12 +83,16 @@ public class JsonHelpers {
         Leads[] leadsArray = new Gson().fromJson(array, Leads[].class);
         ArrayList<Leads> leads = new ArrayList<>(Arrays.asList(leadsArray));
 
-        // TODO: stub; actual logic to remove dupes goes here ------------------------
         for (int i = 0; i < leads.size(); i++) {
-            System.out.println(leads.get(i).getAddress());
+            ArrayList<Leads> sublist = new ArrayList<>(leads.subList(i + 1, leads.size()));
+            for (int j = 0; j < sublist.size(); j++) {
+                if (leads.get(i).getEmail().equals(sublist.get(j).getEmail()) ||
+                        leads.get(i).get_id().equals(sublist.get(j).get_id())) {
+                    LOGGER.log(Level.INFO, "Found a dupe at index " + j);
+                    leads.remove(j);
+                }
+            }
         }
-        leads.remove(0);
-        // TODO: ---------------------------------------------------------------
 
         Leads[] leadsDeduped = new Leads[leads.size()];
         leadsDeduped = leads.toArray(leadsDeduped);
