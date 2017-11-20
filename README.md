@@ -8,7 +8,7 @@ To run the program, open a terminal and then:
 
     java -jar java-json-deduplication.jar your_file.json
 
-Then find the deduplicated.json and deduplication_log_<datetime>.log file upon completion
+Then find the deduplicated.json and deduplication_log_[datetime].log file upon completion
 
 ## Implementation note
 
