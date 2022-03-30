@@ -21,6 +21,11 @@ public class Main {
 
         LOGGER.log(Level.INFO, LogMessages.Messages.STARTED.toString());
 
+        // 2022-03-30 note upon re-reading this code again years later:
+        // This is violating single responsibility principle, doing way too much
+        // I would abstract away a lot of the stuff in this file into separate classes
+        // so that it would read more cleanly, among other benefits (like only updating
+        // a small file for error-handling changes instead of a big Main.java)
         if (!isRequiredNumArguments(args)) {
             exit();
         }
