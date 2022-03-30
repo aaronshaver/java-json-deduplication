@@ -32,6 +32,9 @@ public class Deduplication {
     private static ArrayList<Leads> processDupes(ArrayList<Leads> leads) {
         ArrayList<Leads> listCopy = new ArrayList<>(leads);
 
+        // refactor note: this is O(n^2) and could likely be done in O(n):
+        // keep track of indexes and remove them all at once after scanning for duplicates;
+        // I might be over-simplifying here, though, but it's worth investigating
         for (int i = 0; i < leads.size(); i++) {
             // create a subset of the entries to compare value-under-test against
             ArrayList<Leads> sublist = new ArrayList<>(leads.subList(i + 1, leads.size()));
@@ -52,6 +55,8 @@ public class Deduplication {
 
                     int keepIndex;
                     int removeIndex;
+                    // refactor note: the comments are well-intentioned, but this huge method is a code smell;
+                    // we could probably break into several smaller, well-named methods
                     if(outerDate.after(innerDate)) {
                         // value-under-test (VUT) is newer date, therefore remove "inner", older value
                         // also: sublist is offset by one, because it excludes the value-under-test
@@ -105,6 +110,7 @@ public class Deduplication {
         Leads[] leadsArray = new Gson().fromJson(array, Leads[].class);
         ArrayList<Leads> leads = new ArrayList<>(Arrays.asList(leadsArray));
 
+        // refactor note: is that O(n^2) being called mulitple times!? potential yikes
         while (hasDupes(JsonHelpers.convertLeadsArrayListToJsonObject(leads))) {
             leads = processDupes(leads);
         }
