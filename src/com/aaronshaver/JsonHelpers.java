@@ -36,6 +36,11 @@ public class JsonHelpers {
         return json.toString();
     }
 
+    // 2022-03-30 refactor notes after not having seen this code for years:
+    // this is a poorly-named method; what it's doing is grabbing all values for a particular
+    // key; should be named something like getAllValuesForKey(..., String keyName)
+    // I guess I was using domain-specific naming, but even then it could be better, like:
+    // getAllMemberValuesByKey, or... something
     public static ArrayList<String> getAllMembers(JsonObject json, String memberName) {
         ArrayList<String> members = new ArrayList<>();
         for (Map.Entry<String, JsonElement> entry : json.entrySet()) {
